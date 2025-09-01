@@ -1,0 +1,82 @@
+enum Category {
+  arrays
+  dynamic_programming
+  graphs
+  math
+  other
+  searching
+  sorting
+  strings
+  trees
+}
+
+scalar Date
+
+enum Difficulty {
+  easy
+  hard
+  medium
+}
+
+type EdgeCase {
+  author: User
+  createdAt: Date
+  description: String
+  id: ID
+  isAiGenerated: Boolean
+  problem: Problem
+  problemId: ID
+  testCase: String
+  updatedAt: Date
+  userId: ID
+}
+
+type Mutation {
+  ok: Boolean
+}
+
+type PageInfo {
+  endCursor: String
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+}
+
+type Problem {
+  author: User
+  authorId: ID
+  category: Category
+  createdAt: Date
+  description: String
+  difficulty: Difficulty
+  edgeCases: [EdgeCase!]
+  id: ID
+  title: String
+}
+
+type Query {
+  edgeCases: [EdgeCase!]
+  me: User
+  ok: Boolean
+  problem(id: String!): Problem
+  problems(after: String, before: String, first: Int, last: Int): QueryProblemsConnection
+  user(id: String!): User
+}
+
+type QueryProblemsConnection {
+  edges: [QueryProblemsConnectionEdge]
+  pageInfo: PageInfo!
+}
+
+type QueryProblemsConnectionEdge {
+  cursor: String!
+  node: Problem
+}
+
+type User {
+  edgeCases: [EdgeCase!]
+  email: String
+  id: ID
+  name: String
+  problems: [Problem!]
+}

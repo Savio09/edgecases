@@ -1,0 +1,14 @@
+ # Disabled: use TS operation stubs under graphql/operations for Relay.
+ # Keeping this file commented out to avoid Relay Rust compiler categorizer warnings.
+ #
+ # query ProblemsRelayListQuery($first: Int!) {
+ #   problems(first: $first) {
+ #     edges {
+ #       node {
+ #         id
+ #         title
+ #         difficulty
+ #       }
+ #     }
+ #   }
+ # }

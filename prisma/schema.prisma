@@ -1,0 +1,71 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator pothos {
+  provider = "prisma-pothos-types"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Difficulty {
+  easy
+  hard
+  medium
+}
+
+enum Category {
+  arrays
+  strings
+  trees
+  graphs
+  dynamic_programming
+  sorting
+  searching
+  math
+  other
+}
+
+model User {
+  id        String     @id @default(cuid())
+  email     String     @unique
+  name      String?
+  clerkId   String     @unique
+  problems  Problem[]
+  edgeCases EdgeCase[]
+  createdAt DateTime   @default(now())
+}
+
+model Problem {
+  id          String     @id @default(cuid())
+  title       String
+  description String     @db.Text
+  author      User       @relation(fields: [authorId], references: [id])
+  authorId    String
+  edgeCases   EdgeCase[]
+  difficulty  Difficulty @default(easy)
+  category    Category   @default(other)
+  createdAt   DateTime   @default(now())
+}
+
+model EdgeCase {
+  id            String   @id @default(cuid())
+  description   String?  @db.Text
+  testCase      String
+  author        User     @relation(fields: [authorId], references: [id])
+  authorId      String
+  problem       Problem  @relation(fields: [problemId], references: [id])
+  problemId     String
+  isAiGenerated Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
